@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Colourfall</string>
+    <string name="TEST_MESSAGE">TEST_MESSAGE</string>
+    <string name="app_activity_label">App Activity</string>
+</resources>
