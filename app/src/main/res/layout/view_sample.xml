@@ -6,28 +6,27 @@
     android:layout_height="0dp"
     android:layout_weight="1"
     >
-    <Button
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <TextView
+        android:id="@+id/colorText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="RGB(255, 255, 255)"
         />
     <Button
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:id="@+id/moveButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="B"
+        android:layout_centerInParent="true"
+        android:text="MOVE"
         />
     <Button
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:id="@+id/lockButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="C"
-        />
-    <Button
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="D"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="LOCK"
         />
 </io.github.declanw3.colourfall.SampleView>

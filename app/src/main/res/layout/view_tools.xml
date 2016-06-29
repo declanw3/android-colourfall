@@ -11,12 +11,14 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="RANDOMISE"
         />
     <Button
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="B"
         />
 </io.github.declanw3.colourfall.ToolsView>

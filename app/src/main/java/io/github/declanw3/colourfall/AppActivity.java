@@ -20,12 +20,14 @@ public class AppActivity extends Activity{
         paletteView = (PaletteView)findViewById(R.id.paletteView);
 
         randomiseButton = (Button)findViewById(R.id.randomiseButton);
-        randomiseButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                paletteView.randomiseColors();
-            }
-        });
+        if(randomiseButton != null) {
+            randomiseButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Do something in response to button click
+                    paletteView.randomiseColors();
+                }
+            });
+        }
     }
 
     @Override
