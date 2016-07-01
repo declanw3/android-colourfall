@@ -18,7 +18,7 @@ import java.util.Random;
 public class PaletteView extends LinearLayout {
 
     private ArrayList<SampleView> samples;
-    private int activeSample = -1;
+    private int focusedSample = -1;
 
     public PaletteView(Context context) {
         super(context);
@@ -41,9 +41,17 @@ public class PaletteView extends LinearLayout {
 
         for(int i = 0; i < 5; ++i)
         {
-            View test = inflater.inflate(R.layout.view_sample, this);
+            inflater.inflate(R.layout.view_sample, this);
             samples.add((SampleView)this.getChildAt(i));
             samples.get(i).Index(i);
+
+            OnClickListener onSampleClicked = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OnSampleClicked(v);
+                }
+            };
+            samples.get(i).SetOnSampleClicked(onSampleClicked);
 
             OnTouchListener onMoveTouched = new OnTouchListener() {
                 @Override
@@ -53,25 +61,38 @@ public class PaletteView extends LinearLayout {
             };
             samples.get(i).SetOnMoveTouched(onMoveTouched);
         }
+
+        // TODO: Orientation change
     }
 
-    public void randomiseColors()
+    public void RandomiseColors()
     {
         for(SampleView s : samples)
         {
-            if(!s.Locked())
+            if(!s.LockedState())
             {
-                Random rnd = new Random();
-                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                s.setBackgroundColor(color);
+                s.UpdateSample();
+            }
+        }
+    }
+
+    public void SetContentState(boolean _visible)
+    {
+        for(SampleView s : samples)
+        {
+            for(int i = 0; i < s.getChildCount(); ++i) {
+                s.SetContentState(s.getChildAt(i), _visible);
             }
         }
     }
 
     private boolean OnMoveTouched(View v, MotionEvent event)
     {
-        Log.d("onTouch", "ENTRY");
         switch(event.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                // No longer down
+                Log.d("MOTION", "ACTION_UP");
+                return true;
             case MotionEvent.ACTION_DOWN:
                 // Do something
                 Log.d("MOTION", "ACTION_DOWN");
@@ -85,5 +106,18 @@ public class PaletteView extends LinearLayout {
                 return true;
         }
         return false;
+    }
+
+    private void OnSampleClicked(View v)
+    {
+//        int previousSample = focusedSample;
+//        SampleView clickedSample = (SampleView)v;
+//        focusedSample = clickedSample.Index();
+//        if((previousSample >= 0) && (previousSample < samples.size()))
+//        {
+//            samples.get(previousSample).SetFocus(false);
+//        }
+//
+//        clickedSample.SetFocus(true);
     }
 }

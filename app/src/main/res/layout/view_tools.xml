@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <io.github.declanw3.colourfall.ToolsView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolsView"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -15,10 +16,11 @@
         android:text="RANDOMISE"
         />
     <Button
+        android:id="@+id/toggleButton"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="B"
+        android:text="TOGGLE CONTENT"
         />
 </io.github.declanw3.colourfall.ToolsView>

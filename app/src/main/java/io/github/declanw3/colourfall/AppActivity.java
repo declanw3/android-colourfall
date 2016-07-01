@@ -10,7 +10,9 @@ import android.widget.Button;
  */
 public class AppActivity extends Activity{
     private PaletteView paletteView;
-    private Button randomiseButton;
+    private ToolsView toolsView;
+
+    private boolean contentState = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +20,22 @@ public class AppActivity extends Activity{
         setContentView(R.layout.activity_app);
 
         paletteView = (PaletteView)findViewById(R.id.paletteView);
+        toolsView = (ToolsView)findViewById(R.id.toolsView);
 
-        randomiseButton = (Button)findViewById(R.id.randomiseButton);
-        if(randomiseButton != null) {
-            randomiseButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Do something in response to button click
-                    paletteView.randomiseColors();
-                }
-            });
-        }
+        View.OnClickListener onRandomiseClicked = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnRandomiseClicked(v);
+            }
+        };
+        toolsView.SetOnRandomiseClicked(onRandomiseClicked);
+        View.OnClickListener onToggleClicked = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnToggleClicked(v);
+            }
+        };
+        toolsView.SetOnToggleClicked(onToggleClicked);
     }
 
     @Override
@@ -38,5 +46,16 @@ public class AppActivity extends Activity{
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+
+    private void OnRandomiseClicked(View v)
+    {
+        this.paletteView.RandomiseColors();
+    }
+    private void OnToggleClicked(View v)
+    {
+        contentState = !contentState;
+        this.paletteView.SetContentState(contentState);
     }
 }
