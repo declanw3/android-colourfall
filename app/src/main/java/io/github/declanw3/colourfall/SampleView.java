@@ -19,13 +19,14 @@ import java.util.Random;
 /**
  * Created by DEC on 6/18/2016.
  */
-public class SampleView extends RelativeLayout{
+public class SampleView extends RelativeLayout implements IntValueStore.IntValueStoreListener{
     private EditView editView;
     private Button editButton;
     private Button moveButton;
     private Button lockButton;
     private TextView colorText;
 
+    private IntValueStore colorModel;
     private int colorCurrent;
     private ValueAnimator colorAnim;
 
@@ -66,19 +67,35 @@ public class SampleView extends RelativeLayout{
         init(getContext());
     }
 
+    @Override
+    public void onValueChanged(int newValue) {
+        // Our color has been updated
+        this.colorCurrent = newValue;
+        setBackgroundColor(this.colorCurrent);
+        UpdateColorText();
+    }
+
     private void init(Context context) {
+        colorModel = new IntValueStore(Color.WHITE);
+        colorModel.addListener(this);
+
         editView = (EditView) this.findViewById(R.id.editView);
         editButton = (Button)this.findViewById(R.id.editButton);
         moveButton = (Button)this.findViewById(R.id.moveButton);
         lockButton = (Button)this.findViewById(R.id.lockButton);
         colorText = (TextView)this.findViewById(R.id.colorText);
 
+        // Allow EditView to modify color value. (Unique to each sample)
+        editView.Initialise(this);
         // Start edit view as hidden
         editView.setScaleX(0.0f);
         editView.EditState(false);
         editView.setVisibility(GONE);
         // Set pivot to scale from the left
         editView.setPivotX(0.0f);
+
+        // Update all corresponding listeners
+        colorModel.setValue(Color.WHITE);
 
         OnClickListener onEditClicked = new OnClickListener() {
             @Override
@@ -110,6 +127,11 @@ public class SampleView extends RelativeLayout{
         UpdateColorText();
     }
 
+    public void close()
+    {
+
+    }
+
     public void UpdateSample()
     {
         RandomiseColor();
@@ -128,14 +150,8 @@ public class SampleView extends RelativeLayout{
 
     private void UpdateColorText()
     {
-        int color = Color.TRANSPARENT;
-        Drawable background = this.getBackground();
-        if (background instanceof ColorDrawable) {
-            color = ((ColorDrawable) background).getColor();
-        }
-
-        String rbg = String.format("RGB(%1$s,%2$s,%3$s)", Color.red(color), Color.green(color), Color.blue(color));
-        colorText.setText(rbg);
+        String rgb = String.format("RGB(%1$s,%2$s,%3$s)", Color.red(this.colorCurrent), Color.green(this.colorCurrent), Color.blue(this.colorCurrent));
+        colorText.setText(rgb);
     }
 
     public void SetContentState(View v, boolean _visible)
@@ -163,11 +179,14 @@ public class SampleView extends RelativeLayout{
         }
     }
 
+    public IntValueStore GetColorModel()
+    {
+        return this.colorModel;
+    }
+
     private void OnBackgroundColorUpdate(ValueAnimator animator)
     {
-        this.colorCurrent = (int)animator.getAnimatedValue();
-        setBackgroundColor(this.colorCurrent);
-        UpdateColorText();
+        colorModel.setValue((int)animator.getAnimatedValue());
     }
 
     private void OnEditClicked() {

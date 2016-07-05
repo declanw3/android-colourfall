@@ -1,7 +1,6 @@
 package io.github.declanw3.colourfall;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +9,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by DEC on 6/17/2016.
  */
-public class PaletteView extends LinearLayout {
-
+public class PaletteView extends LinearLayout
+{
     private ArrayList<SampleView> samples;
     private int focusedSample = -1;
 
@@ -38,7 +36,6 @@ public class PaletteView extends LinearLayout {
         samples = new ArrayList<>();
 
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         for(int i = 0; i < 5; ++i)
         {
             inflater.inflate(R.layout.view_sample, this);

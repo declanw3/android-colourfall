@@ -38,10 +38,15 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="LOCK"
-        android:stateListAnimator="@null"/>
-    <include layout="@layout/view_edit"
+        android:stateListAnimator="@null"
+        />
+    <io.github.declanw3.colourfall.EditView
         android:id="@+id/editView"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/editButton"/>
+        android:layout_toRightOf="@id/editButton"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTintMode="multiply"
+        />
 </io.github.declanw3.colourfall.SampleView>
