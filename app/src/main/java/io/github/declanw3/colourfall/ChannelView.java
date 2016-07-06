@@ -1,13 +1,10 @@
 package io.github.declanw3.colourfall;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -58,32 +55,37 @@ public class ChannelView extends LinearLayout implements IntValueStore.IntValueS
         colorEdit = (EditText)this.findViewById(R.id.colorEdit);
         colorSeek = (SeekBar)this.findViewById(R.id.colorSeek);
 
+        colorEdit.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "255"), new InputFilter.LengthFilter(3)} );
         colorEdit.addTextChangedListener(new TextWatcher() {
+            private CharSequence previous = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-//                String input = colorEdit.getText().toString();
-//                if (!input.equals("")) {
-//                    int val = Integer.parseInt(input);
-//                }
-//
-//                int value = Integer.parseInt(colorEdit.getText().toString());
-//                int color = colorModel.getValue();
-//                color &= ~(0xFF << (channelIndex * 8));
-//                color |= (value << (channelIndex * 8));
-//                colorModel.setValue(color);
-                Log.d("BEFORE", String.format("onTextChanged: %1$s", s));
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                String newColor = s.toString();
 
-                Log.d("AFTER", String.format("onTextChanged: %1$s", s));
+                if(!newColor.equals(previous.toString())) {
+                    int val = 0;
+                    if (!newColor.equals("")) {
+                        val = Integer.parseInt(newColor);
+                    }
+
+                    int color = colorModel.getValue();
+                    color &= ~(0xFF << (channelIndex * 8));
+                    color |= (val << (channelIndex * 8));
+
+                    previous = s;
+                    colorModel.setValue(color);
+                }
+
+                colorEdit.setSelection(colorEdit.getText().length());
             }
         });
         colorSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
