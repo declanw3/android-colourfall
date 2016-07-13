@@ -10,10 +10,14 @@ import android.widget.LinearLayout;
  */
 public class ToolsView extends LinearLayout{
     private Button randomiseButton;
+    private Button expandButton;
     private Button toggleButton;
 
     public void SetOnRandomiseClicked(OnClickListener _onRandomiseClicked) {
         this.randomiseButton.setOnClickListener(_onRandomiseClicked);
+    }
+    public void SetOnExpandClicked(OnClickListener _onExpandClicked) {
+        this.expandButton.setOnClickListener(_onExpandClicked);
     }
     public void SetOnToggleClicked(OnClickListener _onToggleClicked) {
         this.toggleButton.setOnClickListener(_onToggleClicked);
@@ -36,6 +40,7 @@ public class ToolsView extends LinearLayout{
     private void init(Context context)
     {
         this.randomiseButton = (Button)this.findViewById(R.id.randomiseButton);
+        this.expandButton = (Button)this.findViewById(R.id.expandButton);
         this.toggleButton = (Button)this.findViewById(R.id.toggleButton);
     }
 }

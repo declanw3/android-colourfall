@@ -3,6 +3,7 @@ package io.github.declanw3.colourfall;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 /**
  * Created by DEC on 6/17/2016.
@@ -28,6 +29,13 @@ public class AppActivity extends Activity{
             }
         };
         toolsView.SetOnRandomiseClicked(onRandomiseClicked);
+        View.OnClickListener onExpandClicked = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnExpandClicked(v);
+            }
+        };
+        toolsView.SetOnExpandClicked(onExpandClicked);
         View.OnClickListener onToggleClicked = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +43,14 @@ public class AppActivity extends Activity{
             }
         };
         toolsView.SetOnToggleClicked(onToggleClicked);
+
+        paletteView.getViewTreeObserver().addOnGlobalLayoutListener(
+            new ViewTreeObserver.OnGlobalLayoutListener(){
+                @Override
+                public void onGlobalLayout() {
+                    paletteView.InitialiseBounds();
+                }
+        });
     }
 
     @Override
@@ -47,14 +63,17 @@ public class AppActivity extends Activity{
         super.onPause();
     }
 
-
     private void OnRandomiseClicked(View v)
     {
         this.paletteView.RandomiseColors();
     }
+    private void OnExpandClicked(View v)
+    {
+        //this.paletteView.SetEditView
+    }
     private void OnToggleClicked(View v)
     {
         contentState = !contentState;
-        this.paletteView.SetContentState(contentState);
+        this.paletteView.SetContentState(contentState ? View.VISIBLE : View.INVISIBLE);
     }
 }

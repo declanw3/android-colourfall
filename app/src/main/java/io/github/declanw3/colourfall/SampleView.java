@@ -4,8 +4,10 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.method.Touch;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,18 +30,18 @@ public class SampleView extends RelativeLayout implements IntValueStore.IntValue
     private int colorCurrent;
     private ValueAnimator colorAnim;
 
+    private TouchRunnable onSampleTouched;
+
     private int index = -1;
     public int Index() {  return index; }
     public void Index(int _index) { this.index = _index; }
-
-    private boolean editState = false;
 
     private boolean lockedState = false;
     public boolean LockedState() {  return lockedState; }
     public void LockedState(boolean _lockedState) { this.lockedState = _lockedState; }
 
-    public void SetOnSampleClicked(OnClickListener _onSampleClicked) {
-        this.setOnClickListener(_onSampleClicked);
+    public void SetOnSampleTouched(TouchRunnable _onSampleTouched) {
+        this.onSampleTouched = _onSampleTouched;
     }
     public void SetOnEditClicked(OnClickListener _onEditClicked) {
         this.editButton.setOnClickListener(_onEditClicked);
@@ -71,6 +73,13 @@ public class SampleView extends RelativeLayout implements IntValueStore.IntValue
         this.colorCurrent = newValue;
         setBackgroundColor(this.colorCurrent);
         UpdateColorText();
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        this.onSampleTouched.OnTouch(this, ev);
+
+        return super.onInterceptTouchEvent(ev);
     }
 
     private void init(Context context) {
@@ -125,11 +134,6 @@ public class SampleView extends RelativeLayout implements IntValueStore.IntValue
         UpdateColorText();
     }
 
-    public void close()
-    {
-
-    }
-
     public void UpdateSample()
     {
         RandomiseColor();
@@ -152,20 +156,6 @@ public class SampleView extends RelativeLayout implements IntValueStore.IntValue
         colorText.setText(rgb);
     }
 
-    public void SetContentState(View v, boolean _visible)
-    {
-        v.setVisibility(_visible ? VISIBLE : INVISIBLE);
-        if (v instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup)v;
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                View child = viewGroup.getChildAt(i);
-                SetContentState(child, _visible);
-
-                // TODO: Fade over time
-            }
-        }
-    }
-
     private void UpdateLockButton() {
         if(LockedState())
         {
@@ -180,6 +170,14 @@ public class SampleView extends RelativeLayout implements IntValueStore.IntValue
     public IntValueStore GetColorModel()
     {
         return this.colorModel;
+    }
+
+    public void SetContentState(int _contentState)
+    {
+        for (int i = 0; i < this.getChildCount(); i++) {
+            View child = this.getChildAt(i);
+            Utility.SetContentState(child, _contentState);
+        }
     }
 
     private void OnBackgroundColorUpdate(ValueAnimator animator)

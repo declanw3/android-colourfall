@@ -16,6 +16,14 @@
         android:text="RANDOMISE"
         />
     <Button
+        android:id="@+id/expandButton"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="EXPAND"
+        />
+    <Button
         android:id="@+id/toggleButton"
         android:layout_width="0dp"
         android:layout_weight="1"

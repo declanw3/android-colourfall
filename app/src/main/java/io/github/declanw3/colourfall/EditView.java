@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -61,14 +62,12 @@ public class EditView extends LinearLayout
         scaleAnim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                setVisibility(VISIBLE);
+                OnAnimationStart();
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if(!EditState()) {
-                    setVisibility(GONE);
-                }
+                OnAnimationEnd();
             }
 
             @Override
@@ -97,6 +96,16 @@ public class EditView extends LinearLayout
         }
     }
 
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+
+        // Edit view is still interactive, reapply visibility state
+        if(!EditState()) {
+            Utility.SetContentState(this, GONE);
+        }
+    }
+
     public void ToggleState()
     {
         EditState(!EditState());
@@ -104,5 +113,17 @@ public class EditView extends LinearLayout
 
         scaleAnim.setObjectValues(this.getScaleX(), targetScale);
         scaleAnim.start();
+    }
+
+    private void OnAnimationStart()
+    {
+        Utility.SetContentState(this, VISIBLE);
+    }
+
+    private void OnAnimationEnd()
+    {
+        if(!EditState()) {
+            setVisibility(GONE);
+        }
     }
 }
